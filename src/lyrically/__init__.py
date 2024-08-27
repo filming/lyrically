@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
-from utils.types import Album, List
+from utils.types import Album, List, Song
 
 
 class Lyrically:
@@ -67,3 +67,41 @@ class Lyrically:
         discography.append(curr_album)
 
         return discography
+
+    def get_song_lyrics(self, song_url: str) -> Song:
+        """Retrieve the song lyrics of a specific song."""
+
+        song = {"title": None, "lyrics": []}
+
+        r = self.s.get(song_url)
+        soup = BeautifulSoup(r.text, "html.parser")
+
+        content_container = soup.find("div", class_="col-xs-12 col-lg-8 text-center")
+
+        # Get the song title
+        bold_elements = content_container.findAll("b")
+
+        for curr_bold_element in bold_elements:
+
+            if curr_bold_element.parent.has_attr("class"):
+
+                class_string = " ".join(curr_bold_element.parent.get("class"))
+
+                if class_string == "col-xs-12 col-lg-8 text-center":
+                    song["title"] = curr_bold_element.text[1:-1]
+
+        # Get the song lyrics
+        lyric_container = content_container.find("div", class_="")
+
+        lyrics = lyric_container.text.replace("\r", "")
+        lyric_lines = lyrics.split("\n")
+
+        sanitized_lyric_lines = []
+
+        for curr_line in lyric_lines:
+            if curr_line:
+                sanitized_lyric_lines.append(curr_line)
+
+        song["lyrics"] = sanitized_lyric_lines
+
+        return song
