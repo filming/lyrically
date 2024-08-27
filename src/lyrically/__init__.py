@@ -58,8 +58,14 @@ class Lyrically:
                         curr_song_data = curr_div.find("a")
                         curr_song = {
                             "title": curr_song_data.text,
-                            "link": self.BASE_URL + curr_song_data.get("href"),
                         }
+
+                        curr_song_href_link = curr_song_data.get("href")
+
+                        if self.BASE_URL in curr_song_href_link:
+                            curr_song["link"] = curr_song_href_link
+                        else:
+                            curr_song["link"] = self.BASE_URL + curr_song_href_link
 
                         curr_album["songs"].append(curr_song)
 
