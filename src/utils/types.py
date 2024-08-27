@@ -1,11 +1,22 @@
 from typing import TypedDict, List
 
 
-class Song(TypedDict):
+class SongRef(TypedDict):
+    """Represent a reference to a song, meaning its title and a URL to its lyrics."""
+
     title: str
     link: str
 
 
-class Album(TypedDict):
+class Song(TypedDict):
+    """Represent a song with its title and lyrics."""
+
     title: str
-    songs: List[Song]
+    lyrics = List[str]
+
+
+class Album(TypedDict):
+    """Represent an album with its title and song references."""
+
+    title: str
+    songs: List[SongRef]
