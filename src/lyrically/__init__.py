@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 
+from utils.types import Album, List
+
 
 class Lyrically:
     """A class which contains methods used to retrieve and store song data."""
@@ -9,7 +11,7 @@ class Lyrically:
         self.BASE_URL = "https://www.azlyrics.com"
         self.s = requests.Session()
 
-    def get_artist_discography(self, artist_name: str):
+    def get_artist_discography(self, artist_name: str) -> List[Album]:
         """Retrieve the album titles and song information of an artist."""
 
         artist_name = artist_name.lower().replace(" ", "")
@@ -17,7 +19,7 @@ class Lyrically:
 
         r = self.s.get(artist_page_url)
 
-        albums = []
+        discography = []
         curr_album = {
             "title": None,
             "songs": [],
@@ -37,7 +39,7 @@ class Lyrically:
                     if "album" in curr_div_classes:
                         # store currently stored album data before moving onto next
                         if curr_album["title"] != None:
-                            albums.append(curr_album)
+                            discography.append(curr_album)
 
                             curr_album = {
                                 "title": None,
@@ -62,6 +64,6 @@ class Lyrically:
                         curr_album["songs"].append(curr_song)
 
         # push the remaining songs into the albums list
-        albums.append(curr_album)
+        discography.append(curr_album)
 
-        return albums
+        return discography
