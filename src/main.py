@@ -1,4 +1,4 @@
-from lyrically import Lyrically
+from .lyrically import Lyrically
 
 
 def main():
