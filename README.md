@@ -40,9 +40,16 @@ discography = lyrically.get_artist_discography(artist_name)
 
 lyrics = []
 
-for song_ref in discography["songs"]:
-    curr_song_lyrics = lyrically.get_song_lyrics(song_ref["link"])
-    lyrics.append(curr_song_lyrics)
+for curr_album in discography:
+    curr_album_lyrics = {
+        "title": curr_album["title"],
+        "lyrics": [],
+    }
+    for song_ref in curr_album["songs"]:
+        curr_song_lyrics = lyrically.get_song_lyrics(song_ref["link"])
+        curr_album_lyrics["lyrics"].append(curr_song_lyrics)
+    
+    lyrics.append(curr_album_lyrics)
 ```
 
 ## Authors
