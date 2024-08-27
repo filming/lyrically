@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
-from ..utils.types import Album, List, Song
+from .utils.types import Album, List, Song
 
 
 class Lyrically:
